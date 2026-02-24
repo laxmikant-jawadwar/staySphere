@@ -54,17 +54,31 @@ body{
     text-decoration: underline;
 }
 
+/*Card-container div*/
+.card-container{
+    border:#222222 1px solid ;
+    border-radius: 1rem;
+    box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.1);
+    
+}
+.review-container{
+    border:#222222 1px solid ;
+    border-radius: 1rem;
+    box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.1);
+}
+
 /*Cards*/
 .listing-card{
     border: none;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
+    padding-right: 2rem;
 }
-.card-img-top{
+/* .card-img-top{
     border-radius: 1rem;
     width: 100%;
     object-fit: cover;
     height: 20rem;
-}
+} */
 .card-body{
     padding: 0;
 }
@@ -98,7 +112,7 @@ body{
 /*show page */
 
 .show-img{
-    height: 35vh;
+    height: 40vh;
 }
 
 .btns{
@@ -109,5 +123,5 @@ body{
 /* Maps */
 #map { 
     height: 400px;
-    width: 100vh;
+    width: 100%;
 }
