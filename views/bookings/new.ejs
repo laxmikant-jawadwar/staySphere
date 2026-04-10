@@ -1,0 +1,72 @@
+<% layout("layouts/boilerplate") %>
+<div class="row">
+    <div class="col-6 offset-3 mt-3">
+        <h3>Confirm Booking Information !</h3>
+        <form method = "POST" action="/bookings/<%=listing._id%>">
+            <div class="mb-3">
+                <label for="userName">Your Name</label>
+                <input  
+                    name="booking[userName]" 
+                    type="text" 
+                    value="<%= curUser ? curUser.username : '' %>"
+                    class="form-control"
+                    id="userName"
+                    required
+                    readonly
+                >
+            </div>
+            <div class="mb-3">
+                <label for="mail">Your Email</label>
+                <input  
+                    name="booking[mail]" 
+                    type="email" 
+                    value="<%= curUser ? curUser.email : '' %>"
+                    class="form-control"
+                    id="mail"
+                    required
+                    readonly
+                >
+            </div>
+            <div class="mb-3">
+                <label for="dateFrom">Date From </label>
+                <input  
+                    name="booking[dateFrom]" 
+                    type="date" 
+                    value= "<%= today %>"
+                    min="<%= today %>"
+                    class="form-control"
+                    id="dateFrom"
+                    required
+                >
+            </div>
+            <div class="mb-3">
+                <label for="dateTo">Date To </label>
+                <input  
+                    name="booking[dateTo]" 
+                    type="date" 
+                    value= ""
+                    class="form-control"
+                    id="dateTo"
+                    required
+                >
+            </div>
+            <div class="mb-3">
+                <label for="numOfPeople">Number Of People</label>
+                <input  
+                    name="booking[numOfPeople]" 
+                    type="number" 
+                    value="1"
+                    min="1"
+                    class="form-control"
+                    id="numOfPeople"
+                    required
+                >
+            </div>
+            <div class="mb-3">
+                <button class="btn btn-primary" type="submit">Confirm Booking</button>
+            </div>   
+        </form>
+    </div>
+</div>
+
+

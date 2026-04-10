@@ -5,7 +5,7 @@ const {isLoggedIn , isOwner ,validateListing } = require("../middleware.js");
 const listingController = require("../controllers/listings.js");
 const multer = require("multer");
 const {storage} = require("../cloudConfig.js")
-const upload = multer({storage}) ;; //storage is where actually storing it.
+const upload = multer({storage}) ; //storage is where actually storing it.
 
 router
     .route("/")
@@ -49,5 +49,21 @@ router.get(
     wrapAsync( listingController.renderEditForm)
 );
 
+//show booking page 
+router
+    .get(
+    "/:id/booking",
+        wrapAsync( listingController.renderNewBookingForm)
+    )
+    .post(
+        "/:id/booking",
+        wrapAsync( listingController.createBooking)
+    );
+
+//booking confirm page
+router.get("/bookings/:bookingId/success", async (req, res) => {
+    const booking = await Booking.findById(req.params.bookingId);
+    res.render("bookings/success.ejs", { booking });
+});
 
 module.exports =router;
