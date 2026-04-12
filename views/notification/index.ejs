@@ -1,0 +1,59 @@
+<% layout("layouts/boilerplate") %>
+
+<style>
+.notification-new {
+    background-color: #e7f3ff;
+    border-left: 4px solid #0d6efd;
+}
+
+.notification-old {
+    background-color: #f8f9fa;
+}
+</style>
+
+<div class="container mt-4">
+
+  <% if(notifications.length === 0){ %>
+
+    <!-- if no notifactions then -->
+    <div class="text-center mt-5">
+      <i class="fa-regular fa-bell fa-2x text-muted mb-3"></i>
+      <p class="text-muted">No notifications yet</p>
+    </div>
+
+  <% } else { %>
+    <h3>Notifications</h3>
+
+    <% notifications.forEach(n => { %>
+
+      <div class="card p-2 mb-2 mt-3 shadow-sm 
+          <%= !n.isRead ? 'notification-new' : 'notification-old' %>">
+
+        <div class="d-flex justify-content-between align-items-center">
+
+          <div>
+            <p class="mb-1"><%= n.message %></p>
+            <small class="text-muted">
+              <%= n.createdAt.toDateString() %>
+            </small>
+
+            <% if(!n.isRead){ %>
+              <span class="badge bg-primary">New</span>
+            <% } %>
+          </div>
+
+          <% if(n.booking){ %>
+            <a href="/bookings/<%= n.booking %>/details" class="btn btn-sm btn-dark">
+              View
+            </a>
+          <% } %>
+
+        </div>
+
+      </div>
+
+    <% }) %>
+
+  <% } %>
+
+</div>

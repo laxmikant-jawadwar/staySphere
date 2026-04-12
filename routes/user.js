@@ -24,6 +24,13 @@ router
     );
 
 router.get("/logout",userController.logout);
+// router.get("/profile",userController.profile);
+
+router.get(
+    "/profile",
+   // isLoggedIn,
+    wrapAsync(userController.profile)
+);
 
 
 module.exports = router;

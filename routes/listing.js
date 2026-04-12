@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const wrapAsync = require("../utils/wrapAsync.js");
-const {isLoggedIn , isOwner ,validateListing } = require("../middleware.js");
+const {isLoggedIn , isOwner ,validateListing ,validateBooking} = require("../middleware.js");
 const listingController = require("../controllers/listings.js");
 const multer = require("multer");
-const {storage} = require("../cloudConfig.js")
+const {storage} = require("../cloudConfig.js");
 const upload = multer({storage}) ; //storage is where actually storing it.
+const Booking = require("../models/booking.js");
 
 router
     .route("/")
@@ -49,21 +50,30 @@ router.get(
     wrapAsync( listingController.renderEditForm)
 );
 
-//show booking page 
+
 router
+    //show booking page 
     .get(
-    "/:id/booking",
+        "/:id/booking",
+        isLoggedIn,
         wrapAsync( listingController.renderNewBookingForm)
     )
     .post(
         "/:id/booking",
+        isLoggedIn,
+        validateBooking,
         wrapAsync( listingController.createBooking)
     );
 
 //booking confirm page
-router.get("/bookings/:bookingId/success", async (req, res) => {
-    const booking = await Booking.findById(req.params.bookingId);
-    res.render("bookings/success.ejs", { booking });
-});
+router
+    .get(
+        "/bookings/:bookingId/success",
+        isLoggedIn,
+        wrapAsync(async (req, res) => {
+        const booking = await Booking.findById(req.params.bookingId);
+        res.render("bookings/success.ejs", { booking });
+        })
+    );
 
-module.exports =router;
+module.exports = router;

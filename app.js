@@ -24,12 +24,14 @@ const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 const bookingRouter = require("./routes/booking.js");
+const notificationRouter = require("./routes/notification.js");
+const privacyAndTermsRouter = require("./routes/PrivacyAndTerms.js");
 
 
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views"));//
 app.use(express.urlencoded({extended : true}));
-app.use(methodOverride("_method"));
+app.use(methodOverride("_method")); 
 app.engine("ejs",ejsMate);
 app.use(express.static(path.join(__dirname,"/public")));
 
@@ -98,10 +100,29 @@ app.use((req,res,next)=>{
     next();
 });
 
+const Notification = require("./models/notification");
+
+app.use(async (req, res, next) => {
+    if (req.user) {
+        const unreadCount = await Notification.countDocuments({
+            user: req.user._id,
+            isRead: false
+        });
+
+        res.locals.unreadCount = unreadCount;
+    } else {
+        res.locals.unreadCount = 0;
+    }
+
+    next();
+});
+
+app.use("/", notificationRouter);
 app.use("/listings",listingRouter);
 app.use("/listings/:id/reviews",reviewRouter);
 app.use("/",userRouter);
 app.use("/bookings",bookingRouter);
+app.use("/staySphere",privacyAndTermsRouter);
 
 
 // 404 handler for unmatched routes (Express v5 safe)
@@ -119,3 +140,6 @@ app.use((err,req,res,next)=>{
 app.listen(8080,()=>{
     console.log("App is listening on port 8080");
 });
+
+
+

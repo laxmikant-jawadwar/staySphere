@@ -1,4 +1,6 @@
 const User = require("../models/user.js");
+const Listing = require("../models/listings");
+const Booking = require("../models/booking.js");
 
 module.exports.renderSignupForm = (req,res)=>{ 
     res.render("users/signup.ejs");
@@ -46,4 +48,17 @@ module.exports.logout = (req,res,next)=>{
       req.flash("success","You Are Logged Out!");
       res.redirect("/listings");
   })
+}
+
+module.exports.profile = async (req, res) => {
+    const user = req.user;
+    
+    const listings = await Listing.find({ owner: req.user._id })
+    .sort({ createdAt: -1 });
+
+    const bookings = await Booking.find({ user: req.user._id })
+    .populate("listing")
+    .sort({ createdAt: -1 });
+
+    res.render("users/profile", { user,listings,bookings });
 }

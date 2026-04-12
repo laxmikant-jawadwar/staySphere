@@ -1,0 +1,23 @@
+<% layout("layouts/boilerplate") %>
+
+<div class="container mt-4">
+
+  <h3>Booking Details</h3>
+
+  <div class="card p-3 shadow-sm">
+
+    <p><b>Listing:</b> <%= booking.listing.title %></p>
+
+    <p><b>Booked By:</b> <%= booking.user.username %></p>
+
+    <p><b>Email:</b> <%= booking.user.email %></p>
+
+    <p><b>From:</b> <%= booking.dateFrom.toDateString() %></p>
+
+    <p><b>To:</b> <%= booking.dateTo.toDateString() %></p>
+
+    <p><b>People:</b> <%= booking.numOfPeople %></p>
+
+  </div>
+
+</div>

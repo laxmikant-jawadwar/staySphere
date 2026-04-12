@@ -1,6 +1,7 @@
 const Listing = require("./models/listings.js");
 const Review = require("./models/review.js");
-const {listingSchema , reviewSchema} = require("./schema.js"); //for server side validation
+
+const {listingSchema , reviewSchema ,bookingSchema} = require("./schema.js"); //for server side validation
 const ExpressError = require("./utils/ExpressError.js");
 
 module.exports.isLoggedIn = (req,res,next)=>{
@@ -46,7 +47,7 @@ module.exports.isReviewAuthor = async (req,res,next)=>{
 module.exports.validateListing = (req,res,next)=>{
     const {error} = listingSchema.validate(req.body); //after executing destructuring only error part.
     if(error){
-          throw new ExpressError(400,error);
+          throw new ExpressError(400,error.details[0].message);
     }else{
         next(); //if not occured error then go to non-error handler route/middleware.
     }
@@ -56,8 +57,17 @@ module.exports.validateListing = (req,res,next)=>{
 module.exports.validateReview = (req,res,next)=>{
     const {error} = reviewSchema.validate(req.body);
     if(error){
-        throw new ExpressError(400,error);
+        throw new ExpressError(400,error.details[0].message);
     }else{
         next();
     }
 }
+
+//booking
+module.exports.validateBooking = (req, res, next) => {
+  const { error } = bookingSchema.validate(req.body);
+  if (error) {
+    throw new ExpressError(400, error.details[0].message);
+  }
+  next();
+};

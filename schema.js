@@ -32,3 +32,14 @@ module.exports.reviewSchema = Joi.object({
     }).required()
 });
 
+/* booking */
+module.exports.bookingSchema = Joi.object({
+  booking: Joi.object({
+    userName: Joi.string().required(),
+    mail: Joi.string().email().required(),
+    dateFrom: Joi.date().required(),
+    dateTo: Joi.date().greater(Joi.ref('dateFrom')).required(),
+    numOfPeople: Joi.number().min(1).required()
+  }).required()
+});
+

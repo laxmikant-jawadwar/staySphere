@@ -1,0 +1,113 @@
+<% layout("layouts/boilerplate") %>
+
+<div class="container m-4 profile-container">
+
+  <!-- Profile Info -->
+  <div class="row mt-4">
+    <div class="col-md-4 offset-md-4">
+
+      <div class="card text-center p-3 shadow-sm">
+        <div class="mb-2">
+          <i class="fa-solid fa-user fa-2x"></i>
+        </div>
+
+        <h5><%= user.username %></h5>
+        <p class="text-muted"><%= user.email %></p>
+
+        <a href="/logout" class="btn btn-sm btn-danger">
+          Logout
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Bookings -->
+  <div class="mt-5">
+    <h4>My Bookings</h4>
+    <% if(bookings.length === 0){ %>
+
+    <div class="empty-state">
+      <p class="text-muted">
+        No Bookings yet - <a href="/listings" style="text-decoration: none; color: rgb(103, 213, 160);">start exploring !</a> 
+      </p>
+    </div>
+
+   <% } else { %>
+
+    <div class="scroll-container">
+      <% bookings.forEach(b => { %>
+        <div class="scroll-card">
+          <img 
+            src="<%= b.listing.image.url.replace("/upload", "/upload/w_300,h_200,c_fill") %>" 
+            class="card-img-small"
+            alt="listing_image"
+          >
+
+          <div class="p-2 shadow-sm">
+            <h6><%= b.listing.title %></h6>
+
+            <p class="small text-muted">
+              <%= b.dateFrom.toDateString() %> →
+              <%= b.dateTo.toDateString() %>
+            </p>
+
+            <% if(b.status === "confirmed"){ %>
+                <form action="/bookings/<%= b._id %>?_method=DELETE" method="POST">
+                  <button class="btn btn-sm btn-outline-danger">
+                    Cancel
+                  </button>
+                </form>
+            <% } else { %>
+                <span class="badge bg-secondary">Cancelled</span>
+            <% } %>
+
+          </div>
+
+        </div>
+      <% }) %>
+    </div>
+    <% }  %>
+  </div>
+
+  <!-- Listings -->
+  <div class="mt-4">
+    <h4>My Listings</h4>
+    <% if(listings.length === 0){ %>
+
+    <div class="empty-state">
+      <p class="text-muted">Not yet listed anything.</p>
+      <p class="text-muted">
+        Nothing Listed yet - <a href="/listings/new" style="text-decoration: none; color: rgb(103, 213, 160);">get started !</a> 
+      </p>
+    </div>
+
+   <% } else { %>
+
+    <div class="scroll-container">
+      <% listings.forEach(l => { %>
+        <div class="scroll-card">
+
+          <img 
+            src="<%= l.image.url.replace("/upload", "/upload/w_300,h_200,c_fill") %>" 
+            class="card-img-small"
+            alt="listing_image"
+          >
+
+          <div class="p-2 shadow-sm">
+            <h6><%= l.title %></h6>
+            <p class="small text-muted"><%= l.location %></p>
+
+            <a href="/listings/<%= l._id %>" class="btn btn-sm btn-dark">
+              View
+            </a>
+
+          </div>
+
+        </div>
+      <% }) %>
+    </div>
+    <% }  %>
+  </div>
+
+</div>
