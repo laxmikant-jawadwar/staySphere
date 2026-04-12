@@ -18,7 +18,7 @@ module.exports.signup = async (req, res, next) => {
         if(err){
             return next(err);
         }
-        req.flash("success", "Welcome to WanderLust!");
+        req.flash("success", "Welcome to staySphere");
         res.redirect("/listings");
         })
     } catch (err) {
@@ -34,7 +34,7 @@ module.exports.renderLoginForm = (req,res)=>{
 } 
 
 module.exports.login = async (req,res)=>{
-       req.flash("success","Welcome back to WanderLust!");
+       req.flash("success","Welcome back to staySphere!");
        let redirectUrl = res.locals.redirectUrl || "/listings"
        //if res.locals.redirectUrl have then store it otherwise store "/listing"
        res.redirect(redirectUrl);
