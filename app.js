@@ -3,23 +3,26 @@ if(process.env.NODE_ENV != "production"){
 }
 const express = require("express");
 const app = express() ;
+
 const mongoose = require("mongoose");
-const path = require("path");
-const methodOverride = require("method-override");
-const ejsMate = require("ejs-mate");
-const ExpressError = require("./utils/ExpressError.js");
+const path = require("path");        //path utilities
+const methodOverride = require("method-override"); 
+const ejsMate = require("ejs-mate");  //layout support for ejs
+
+const ExpressError = require("./utils/ExpressError.js"); //custom error handler
+
 const session = require("express-session");
 const MongoStore = require("connect-mongo").default; //MongoDb based session store
 const flash = require("connect-flash"); //instead use express-flash because connect is old library.
+
+
+//model imports
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
+const Notification = require("./models/notification");
 
-
-app.get("/",(req,res)=>{
-    res.redirect("/listings");
-});
-
+//routes imports
 const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
@@ -27,7 +30,7 @@ const bookingRouter = require("./routes/booking.js");
 const notificationRouter = require("./routes/notification.js");
 const privacyAndTermsRouter = require("./routes/PrivacyAndTerms.js");
 
-
+//basic config for every project
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views"));//
 app.use(express.urlencoded({extended : true}));
@@ -35,13 +38,26 @@ app.use(methodOverride("_method"));
 app.engine("ejs",ejsMate);
 app.use(express.static(path.join(__dirname,"/public")));
 
-
-//const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust" ;
+//Db Connection
+//const MONGO_URL = "mongodb://127.0.0.1:27017/staySphere" ; //loacl mongodb connection
 
 // Cloud MongoDB Atlas URL (from .env)
 const dburl = process.env.ATLASDB_URL ;
 
-// SESSION STORE (connect-mongo)
+async function main(){
+   await mongoose.connect(dburl);
+}
+
+main()
+    .then(()=>{
+    console.log("Db is connected");
+    })
+    .catch((err)=>{
+        console.log(err);
+    });
+
+//session config    
+// session store (connect-mongo)
 const store = MongoStore.create({
         mongoUrl: dburl,
         crypto:{
@@ -71,38 +87,25 @@ const sessionOptions ={
     },
 }
 
-async function main(){
-   await mongoose.connect(dburl);
-}
-
-main()
-    .then(()=>{
-    console.log("Db is connected");
-    })
-    .catch((err)=>{
-        console.log(err);
-    });
 
 app.use(session(sessionOptions));
-app.use(flash());
+app.use(flash());   //enables flash messages
 
+//Passport Auth
 app.use(passport.initialize());
 app.use(passport.session());
-passport.use(new LocalStrategy(User.authenticate()));
 
+passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-app.use((req,res,next)=>{
+//Global middlewares
+app.use(async (req,res,next)=>{
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
     res.locals.curUser = req.user; // passport stores cur user in req.user
-    next();
-});
 
-const Notification = require("./models/notification");
-
-app.use(async (req, res, next) => {
+    //notofication count for navbar notific badge
     if (req.user) {
         const unreadCount = await Notification.countDocuments({
             user: req.user._id,
@@ -113,32 +116,42 @@ app.use(async (req, res, next) => {
     } else {
         res.locals.unreadCount = 0;
     }
-
     next();
 });
 
+
+//routes
+
+app.get("/",(req,res)=>{
+    res.redirect("/listings");
+});
+
 app.use("/", notificationRouter);
+app.use("/",userRouter);
 app.use("/listings",listingRouter);
 app.use("/listings/:id/reviews",reviewRouter);
-app.use("/",userRouter);
 app.use("/bookings",bookingRouter);
 app.use("/staySphere",privacyAndTermsRouter);
 
 
-// 404 handler for unmatched routes (Express v5 safe)
-//if any route is not matched above then controll comes here 
+//Error Handling
+//if any route is not matched above then controll comes here : Handle unknown routes
 app.use((req, res, next) => {
     next(new ExpressError(404, "Page Not Found !"));
 });
 
+//central error handler
 app.use((err,req,res,next)=>{
     let{statusCode=500,message="Something Went Wrong" } = err;
     res.status(statusCode).render("Error.ejs",{err});
 });
 
 
-app.listen(8080,()=>{
-    console.log("App is listening on port 8080");
+//server
+const PORT = process.env.PORT || 8080 ;
+
+app.listen(PORT,()=>{
+    console.log(`App is listening on port ${PORT}`);
 });
 
 

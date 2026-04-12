@@ -1,6 +1,4 @@
 const mongoose = require("mongoose");
-const Listing = require("./listings.js");
-const User = require("./user.js");
 
 const bookingSchema = new mongoose.Schema({
     listing:{

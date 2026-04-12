@@ -23,12 +23,12 @@ router
         userController.login
     );
 
-router.get("/logout",userController.logout);
-// router.get("/profile",userController.profile);
+router
+    .route("/logout")
+    .get(userController.logout);
 
 router.get(
     "/profile",
-   // isLoggedIn,
     wrapAsync(userController.profile)
 );
 

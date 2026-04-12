@@ -10,7 +10,7 @@ module.exports.signup = async (req, res, next) => {
     try {
         let {username,email,password} = req.body;
         const newUser = new User({email,username});
-        console.log(newUser);
+        //console.log(newUser);
         const registeredUser = await User.register(newUser, password);
         // console.log(registeredUser);
         req.login(registeredUser,(err)=>{ 
@@ -22,8 +22,8 @@ module.exports.signup = async (req, res, next) => {
         res.redirect("/listings");
         })
     } catch (err) {
-        console.log("Error Occured");
-        console.dir(err);
+        //console.log("Error Occured");
+        //console.dir(err);
         req.flash("error", err.message);
         res.redirect("/signup");
     }

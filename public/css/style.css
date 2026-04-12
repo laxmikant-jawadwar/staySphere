@@ -55,7 +55,7 @@ body{
 }
 
 /*Card-container div*/
-.card-container{
+.card-container .listing-card{
     border:#222222 1px solid ;
     border-radius: 1rem;
     box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.1);
@@ -67,32 +67,39 @@ body{
     box-shadow: 8px 8px 20px rgba(0, 0, 0, 0.1);
 }
 
-/*Cards*/
-.listing-card{
-    border: none;
-    margin-bottom: 1rem;
-    padding-right: 2rem;
-}
-/* .card-img-top{
-    border-radius: 1rem;
-    width: 100%;
-    object-fit: cover;
-    height: 20rem;
-} */
-.card-body{
-    padding: 0;
-}
-.listing-link{
-    text-decoration: none;
+
+/* Home Page cards and each card style  */
+#listingContainer .listing-card {
+    border: 0.2px solid #bdccd2;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: all 0.25s ease;
+    background-color: #fff;
+
 }
 
-/*Card effect */
-.card-img-overlay{
-    opacity :0;
+#listingContainer .listing-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 0.8rem 5rem rgba(0,0,0,0.15);
 }
-.card-img-overlay:hover{
-    opacity :0.2;
-    background-color: white;
+
+#listingContainer .listing-card img {
+    height: 12rem;
+    width: 100%;
+    object-fit: cover;
+}
+
+#listingContainer .listing-card .card-body {
+    padding: 0.8rem 0.6rem;
+
+}
+
+#listingContainer .listing-card .card-text b {
+    font-size: 0.95rem;
+}
+
+#listingContainer .listing-card .card-text span {
+    font-size: 0.85rem;
 }
 
 /*New page */

@@ -80,7 +80,7 @@ module.exports.showListing = async (req,res,next)=>{
         return res.redirect("/listings");
     }
     // console.log(listing);
-    res.render("listings/show.ejs",{listing});  
+    res.render("listings/show.ejs",{listing ,mapToken:process.env.MAP_TOKEN});  
 }
 
 module.exports.createListing = async (req,res,next)=>{
@@ -137,7 +137,7 @@ module.exports.updateListing = async (req,res)=>{
 module.exports.destroyListing = async (req,res)=>{
         let {id} = req.params;
         const deletedListing = await Listing.findByIdAndDelete(id);
-        console.log(deletedListing);
+        //console.log(deletedListing);
         req.flash("success","Listing Deleted Successfully !");
         res.redirect("/listings");
 }

@@ -1,13 +1,4 @@
-const express = require("express");
-const router = express.Router();
-const wrapAsync = require("../utils/wrapAsync.js");
-const {isLoggedIn , isOwner ,validateListing } = require("../middleware.js");
-const listingController = require("../controllers/listings.js");
-const multer = require("multer");
-const {storage} = require("../cloudConfig.js");
 const Notification = require("../models/notification");
-
-const upload = multer({storage}) ; //storage is where actually storing it.
 const Listing = require("../models/listings");
 
 module.exports.renderNewBookingForm = async (req,res)=>{
@@ -18,7 +9,6 @@ module.exports.renderNewBookingForm = async (req,res)=>{
     res.render("bookings/new", { listing, today });
 
 }
-
 
 const Booking = require("../models/booking");
 
@@ -35,7 +25,7 @@ module.exports.createBooking = async (req, res) => {
     });
 
     await newBooking.save();
-    // CREATE NOTIFICATION
+    // Create Notification
     const notification = new Notification({
         user: listing.owner, //  owner gets notification
         message: `${req.user.username} booked your ${listing.title}`,
