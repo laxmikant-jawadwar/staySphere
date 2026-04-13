@@ -74,14 +74,13 @@ StaySphere is a full-stack web application that allows users to discover, list, 
 
 ## 📸 Screenshots
 
-
 ### 🏠 Home Page
 <img src="public/images/readme/home.png" width="700"/>
 
 ### 👤 Profile Page
 <img src="public/images/readme/profile.png" width="700"/>
 
-###  listing View Page
+###   📄 Listing View Page
 <img src="public/images/readme/listing.png" width="700"/>
 
 ### 📅 Booking 
@@ -92,9 +91,11 @@ StaySphere is a full-stack web application that allows users to discover, list, 
 ## ⚙️ Installation (Local Setup)
 
 ```bash
-git clone https://github.com/your-username/staysphere.git
+git clone https://github.com/laxmikant-jawadwar/staySphere.git
 cd staysphere
-npm install
+npm install 
+
+```
 
 ### Create `.env` file:
 
@@ -108,19 +109,18 @@ MAP_TOKEN=your_mapbox_token
 DB_URL=your_mongodb_url
 SECRET=session_secret
 
----
-
-### Then:
-
-```md
+```
 ### Run the app:
 
+```bash
 node app.js
+```
 
 ###Visit
 
 http://localhost:8080
 
+---
 
 ## 📂 Project Structure
 
@@ -139,13 +139,14 @@ http://localhost:8080
  ┣ 📜 package.json
  ┗ 📜 README.md
 
+---
 ## 🎯 Future Improvements
 
 - Wishlist / Favorites ❤️
 - Payment integration 💳
 - Chat system between users 💬
 - Advanced filtering (price, rating)
-
+---
 ## 👨‍💻 Author
 
 *Laxmikant Jawadwar*
