@@ -121,7 +121,7 @@ node app.js
 http://localhost:8080
 
 ---
-
+```md
 ## 📂 Project Structure
 
 📦 staySphere
@@ -138,7 +138,7 @@ http://localhost:8080
  ┣ 📜 app.js
  ┣ 📜 package.json
  ┗ 📜 README.md
-
+```
 ---
 ## 🎯 Future Improvements
 
